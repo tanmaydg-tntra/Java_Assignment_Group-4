@@ -4,6 +4,7 @@ package com.example.product.controller;
 import com.example.product.model.Product;
 import com.example.product.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,13 +24,34 @@ public class ProductController {
 
     @PostMapping
     public ResponseEntity<Product> addProduct(@RequestBody Product product) {
-        return ResponseEntity.ok(service.addProduct(product));
+        try {
+            Product addedProduct = service.addProduct(product);
+            if (addedProduct == null) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .body(null);
+            }
+            return ResponseEntity.ok(addedProduct);
+        } catch (Exception e) {
+            System.out.println("Error while adding product: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(null);
+        }
     }
-
 
     @GetMapping("/status/{status}")
     public ResponseEntity<List<Product>> getByStatus(@PathVariable String status) {
-        return ResponseEntity.ok(service.getProductsByStatus(status));
+        try {
+            List<Product> products = service.getProductsByStatus(status);
+            if (products.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(null);
+            }
+            return ResponseEntity.ok(products);
+        } catch (Exception e) {
+            System.out.println("Error while getting products by status: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(null);
+        }
     }
 
     @DeleteMapping("/{id}")

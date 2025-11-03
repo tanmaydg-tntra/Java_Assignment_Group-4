@@ -95,7 +95,7 @@ public class ProductServiceImpl implements ProductService {
 
             return productRepository.save(existing);
         } else {
-            return null;
+            return null; // or throw new ProductNotFoundException("Product not found with ID: " + id);
         }
     }
 
