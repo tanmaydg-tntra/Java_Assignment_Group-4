@@ -12,7 +12,7 @@ public class Product {
     private int price;
     private String category;
     private int stock;
-    private String status="available";
+    private String status="Available";
 
     public int getId() {
         return id;
