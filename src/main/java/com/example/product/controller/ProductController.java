@@ -43,7 +43,16 @@ public class ProductController {
         return service.getProductsByCategory(category);
     }
 
+    @GetMapping("/price")
+    public List<Product> getProductsByPriceRange( @RequestParam(required = false) Integer min, @RequestParam(required = false) Integer max) {
+
+        return service.getProductByPriceRange(min, max);
+    }
+
+    @GetMapping
+        public List<Product> getAllProduct(){
+            return service.getAllProduct();
+        }
+    }
 
 
-
-}

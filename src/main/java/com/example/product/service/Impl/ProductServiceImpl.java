@@ -43,6 +43,28 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.findByCategory(category);
     }
 
+    @Override
+    public List<Product> getProductByPriceRange(Integer min, Integer max){
+        if(min != null && max != null){
+            return productRepository.findByPriceBetween(min, max);
+        }
+
+        else if(min != null){
+            return productRepository.findByPriceGreaterThanEqual(min);
+        }
+
+        else if(max != null){
+            return productRepository.findByPriceLessThanEqual(max);
+        }
+        else{
+            return productRepository.findAll();
+        }
+    }
+
+    public List<Product> getAllProduct(){
+        return productRepository.findAll();
+    }
+
 
 
 }
