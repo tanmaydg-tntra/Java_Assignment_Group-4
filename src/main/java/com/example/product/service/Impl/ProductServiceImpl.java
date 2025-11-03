@@ -30,7 +30,19 @@ public class ProductServiceImpl implements ProductService {
     }
 
    public List<Product> getProductsByStatus(String status){
-       return productRepository.findByStatus(status);
+        return productRepository.findByStatus(status);
     }
+
+    @Override
+    public void deleteProduct(int id) {
+        productRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Product> getProductsByCategory (String category) {
+        return productRepository.findByCategory(category);
+    }
+
+
 
 }
