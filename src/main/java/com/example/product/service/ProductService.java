@@ -2,6 +2,7 @@ package com.example.product.service;
 
 
 import com.example.product.model.Product;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -13,4 +14,6 @@ public interface ProductService {
     List<Product> getProductsByCategory(String category);
     List<Product> getProductByPriceRange (Integer max, Integer min);
     List<Product> getAllProduct();
+    Product updateProduct(int id, Product product);
+    List<Product> getLowStockProducts(int stockLimit);
 }

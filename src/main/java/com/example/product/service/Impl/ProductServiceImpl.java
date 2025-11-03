@@ -5,6 +5,7 @@ import com.example.product.model.Product;
 import com.example.product.repository.ProductRepository;
 import com.example.product.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,9 +17,12 @@ public class ProductServiceImpl implements ProductService {
     private  ProductRepository productRepository;
 
 
-    public ProductServiceImpl(ProductRepository productRepository) {
-        this.productRepository = productRepository;
-    }
+//    public ProductServiceImpl(ProductRepository productRepository) {
+//        this.productRepository = productRepository;
+//    }
+     public ProductServiceImpl(ProductRepository productRepository) {
+         this.productRepository = productRepository;
+     }
 
     public Product addProduct(Product product) {
         if (product.getStock() == 0) {
@@ -65,6 +69,32 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.findAll();
     }
 
+    @Override
+    public Product updateProduct(int id, Product newProduct) {
+        Product existing = productRepository.findById(id).orElse(null);
+
+        if (existing != null) {
+            existing.setName(newProduct.getName());
+            existing.setPrice(newProduct.getPrice());
+            existing.setCategory(newProduct.getCategory());
+            existing.setStock(newProduct.getStock());
+
+            if (newProduct.getStock() == 0) {
+                existing.setStatus("Out Of Stock");
+            } else {
+                existing.setStatus("Available");
+            }
+
+            return productRepository.save(existing);
+        } else {
+            return null; // or throw new ProductNotFoundException("Product not found with ID: " + id);
+        }
+    }
+
+    @Override
+    public List<Product> getLowStockProducts(int stockLimit) {
+        return productRepository.findByStockLessThan(stockLimit);
+    }
 
 
 }

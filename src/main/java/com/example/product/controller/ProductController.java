@@ -6,7 +6,6 @@ import com.example.product.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.yaml.snakeyaml.tokens.ScalarToken;
 
 import java.util.List;
 
@@ -15,7 +14,7 @@ import java.util.List;
 public class ProductController {
 
     @Autowired
-    private final ProductService service;
+    private ProductService service;
 
 
     public ProductController(ProductService service) {
@@ -53,6 +52,17 @@ public class ProductController {
         public ResponseEntity<List<Product>> getAllProduct(){
             return ResponseEntity.ok(service.getAllProduct());
         }
+
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Product> updateProduct(@PathVariable int id, @RequestBody Product product) {
+        return ResponseEntity.ok(service.updateProduct(id, product));
     }
+
+    @GetMapping("/low-stock/{stockLimit}")
+    public ResponseEntity<List<Product>> getLowStockProducts(@PathVariable int stockLimit) {
+        return ResponseEntity.ok(service.getLowStockProducts(stockLimit));
+    }
+}
 
 
