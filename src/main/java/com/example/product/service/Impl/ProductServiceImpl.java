@@ -79,28 +79,39 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product updateProduct(int id, Product newProduct) {
-        Product existing = productRepository.findById(id).orElse(null);
+        try {
+            Product existing = productRepository.findById(id).orElse(null);
 
-        if (existing != null) {
-            existing.setName(newProduct.getName());
-            existing.setPrice(newProduct.getPrice());
-            existing.setCategory(newProduct.getCategory());
-            existing.setStock(newProduct.getStock());
+            if (existing != null) {
+                existing.setName(newProduct.getName());
+                existing.setPrice(newProduct.getPrice());
+                existing.setCategory(newProduct.getCategory());
+                existing.setStock(newProduct.getStock());
 
-            if (newProduct.getStock() == 0) {
-                existing.setStatus("Out Of Stock");
+                if (newProduct.getStock() == 0) {
+                    existing.setStatus("Out Of Stock");
+                } else {
+                    existing.setStatus("Available");
+                }
+
+                return productRepository.save(existing);
             } else {
-                existing.setStatus("Available");
+                System.err.println("Product not found with ID: " + id);
+                return null;
             }
-
-            return productRepository.save(existing);
-        } else {
-            return null; // or throw new ProductNotFoundException("Product not found with ID: " + id);
+        } catch (Exception e) {
+            System.err.println("Error while updating product: " + e.getMessage());
+            return null;
         }
     }
 
     @Override
     public List<Product> getLowStockProducts(int stockLimit) {
-        return productRepository.findByStockLessThan(stockLimit);
+        try {
+            return productRepository.findByStockLessThan(stockLimit);
+        } catch (Exception e) {
+            System.err.println("Error while getting low-stock products: " + e.getMessage());
+            return new ArrayList<>();
+        }
     }
 }
