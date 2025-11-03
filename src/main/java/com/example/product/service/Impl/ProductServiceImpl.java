@@ -6,6 +6,7 @@ import com.example.product.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -20,18 +21,29 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product addProduct(Product product) {
-        if (product.getStock() == 0) {
-            product.setStatus("Out Of Stock");
-        } else {
-            product.setStatus("Available");
+        try {
+            if (product.getStock() == 0) {
+                product.setStatus("Out Of Stock");
+            } else {
+                product.setStatus("Available");
+            }
+            return productRepository.save(product);
+        } catch (Exception e) {
+            System.out.println("Error while adding product: " + e.getMessage());
+            return null;
         }
-        return productRepository.save(product);
     }
 
-  @Override
-   public List<Product> getProductsByStatus(String status){
-        return productRepository.findByStatus(status);
+    @Override
+    public List<Product> getProductsByStatus(String status) {
+        try {
+            return productRepository.findByStatus(status);
+        } catch (Exception e) {
+            System.out.println("Error while getting products by status: " + e.getMessage());
+            return new ArrayList<>();
+        }
     }
+
 
     @Override
     public void deleteProduct(int id) {
@@ -83,7 +95,7 @@ public class ProductServiceImpl implements ProductService {
 
             return productRepository.save(existing);
         } else {
-            return null; // or throw new ProductNotFoundException("Product not found with ID: " + id);
+            return null;
         }
     }
 
