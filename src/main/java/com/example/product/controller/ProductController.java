@@ -44,14 +44,14 @@ public class ProductController {
     }
 
     @GetMapping("/price")
-    public List<Product> getProductsByPriceRange( @RequestParam(required = false) Integer min, @RequestParam(required = false) Integer max) {
+    public ResponseEntity<List<Product>> getProductsByPriceRange( @RequestParam(required = false) Integer min, @RequestParam(required = false) Integer max) {
 
-        return service.getProductByPriceRange(min, max);
+        return ResponseEntity.ok(service.getProductByPriceRange(min, max));
     }
 
     @GetMapping
-        public List<Product> getAllProduct(){
-            return service.getAllProduct();
+        public ResponseEntity<List<Product>> getAllProduct(){
+            return ResponseEntity.ok(service.getAllProduct());
         }
     }
 
