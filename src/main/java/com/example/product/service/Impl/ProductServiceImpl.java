@@ -6,8 +6,7 @@ import com.example.product.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -47,12 +46,73 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void deleteProduct(int id) {
-        productRepository.deleteById(id);
+        try {
+            if (!productRepository.existsById(id)) {
+                throw new NoSuchElementException("Product not found with ID: " + id);
+            }
+
+            productRepository.deleteById(id);
+            System.out.println("Product deleted successfully with ID: " + id);
+
+        } catch (NoSuchElementException e) {
+            System.err.println("Error: " + e.getMessage());
+            throw e; // rethrow so controller can handle it (e.g., return 404)
+        } catch (Exception e) {
+            System.err.println("Unexpected error while deleting product with ID " + id + ": " + e.getMessage());
+            throw new RuntimeException("Error deleting product with ID " + id, e);
+        }
     }
 
     @Override
-    public List<Product> getProductsByCategory (String category) {
-        return productRepository.findByCategory(category);
+    public List<Product> getProductsByCategory(String category) {
+        try {
+            List<Product> products = productRepository.findByCategoryNative(category);
+
+            if (products == null || products.isEmpty()) {
+                throw new NoSuchElementException("No products found for category: " + category);
+            }
+            return products;
+
+        } catch (NoSuchElementException e) {
+            System.err.println("Error: " + e.getMessage());
+            throw e; // let the controller handle 404-style response
+        } catch (Exception e) {
+            System.err.println("Unexpected error while fetching products by category '" + category + "': " + e.getMessage());
+            throw new RuntimeException("Error fetching products by category: " + category, e);
+        }
+    }
+
+    @Override
+    public List<Product> getProductsByCategoryManual(String category) {
+        try {
+            List<Product> products = getAllProduct();
+            if (products == null || products.isEmpty()) {
+                throw new NoSuchElementException("No products available in the system.");
+            }
+
+            Map<String, List<Product>> categoryMap = new HashMap<>();
+
+            for (Product product : products) {
+                String productCategory = product.getCategory();
+                categoryMap.putIfAbsent(productCategory, new ArrayList<>());
+                categoryMap.get(productCategory).add(product);
+            }
+
+            List<Product> result = categoryMap.getOrDefault(category, new ArrayList<>());
+            if (result.isEmpty()) {
+                throw new NoSuchElementException("No products found for category: " + category);
+            }
+
+            return result;
+
+        } catch (NoSuchElementException e) {
+            System.err.println("Error: " + e.getMessage());
+            throw e; // propagate to controller (e.g., for 404)
+        } catch (Exception e) {
+            System.err.println("Unexpected error while manually fetching products for category '"
+                    + category + "': " + e.getMessage());
+            throw new RuntimeException("Error manually fetching products for category: " + category, e);
+        }
     }
 
     @Override

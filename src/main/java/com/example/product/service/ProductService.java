@@ -10,6 +10,7 @@ public interface ProductService {
     List<Product> getProductsByStatus(String status);
     void deleteProduct(int id);
     List<Product> getProductsByCategory(String category);
+    List<Product> getProductsByCategoryManual(String category);
     List<Product> getProductByPriceRange (Integer max, Integer min);
     List<Product> getAllProduct();
     Product updateProduct(int id, Product product);

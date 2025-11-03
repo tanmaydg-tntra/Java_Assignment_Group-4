@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/products")
@@ -17,7 +18,6 @@ public class ProductController {
 
     @Autowired
     private ProductService service;
-
 
     public ProductController(ProductService service) {
         this.service = service;
@@ -56,18 +56,55 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteProduct(@PathVariable int id){
-        service.deleteProduct(id);
+    public ResponseEntity<String> deleteProduct(@PathVariable int id) {
+        try {
+            service.deleteProduct(id);
+            return ResponseEntity.ok("Product deleted successfully with ID: " + id);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Product not found with ID: " + id);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error deleting product: " + e.getMessage());
+        }
     }
 
     @GetMapping("/category/{category}")
-    public List<Product> getProductsByCategory (@PathVariable String category) {
-        return service.getProductsByCategory(category);
+    public ResponseEntity<?> getProductsByCategory(@PathVariable String category) {
+        try {
+            List<Product> products = service.getProductsByCategory(category);
+
+            if (products.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("No products found for category: " + category);
+            }
+
+            return ResponseEntity.ok(products);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error fetching products by category: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/category/manual/{category}")
+    public ResponseEntity<?> getProductsByCategoryManual(@PathVariable String category) {
+        try {
+            List<Product> products = service.getProductsByCategoryManual(category);
+
+            if (products.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("No products found for category: " + category);
+            }
+
+            return ResponseEntity.ok(products);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error fetching products manually by category: " + e.getMessage());
+        }
     }
 
     @GetMapping("/price")
     public ResponseEntity<List<Product>> getProductsByPriceRange( @RequestParam(required = false) Integer min, @RequestParam(required = false) Integer max) {
-
         return ResponseEntity.ok(service.getProductByPriceRange(min, max));
     }
 
