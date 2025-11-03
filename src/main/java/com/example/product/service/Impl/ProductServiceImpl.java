@@ -17,13 +17,12 @@ public class ProductServiceImpl implements ProductService {
     private  ProductRepository productRepository;
 
 
-//    public ProductServiceImpl(ProductRepository productRepository) {
-//        this.productRepository = productRepository;
-//    }
+
      public ProductServiceImpl(ProductRepository productRepository) {
          this.productRepository = productRepository;
      }
 
+    @Override
     public Product addProduct(Product product) {
         if (product.getStock() == 0) {
             product.setStatus("Out Of Stock");
@@ -33,6 +32,7 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.save(product);
     }
 
+  @Override
    public List<Product> getProductsByStatus(String status){
         return productRepository.findByStatus(status);
     }
