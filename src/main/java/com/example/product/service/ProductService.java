@@ -1,4 +1,4 @@
 package com.example.product.service;
 
-public interface StudentService {
+public interface ProductService {
 }
