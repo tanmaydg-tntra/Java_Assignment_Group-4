@@ -1,11 +1,9 @@
 package com.example.product.service.Impl;
 
-
 import com.example.product.model.Product;
 import com.example.product.repository.ProductRepository;
 import com.example.product.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,8 +13,6 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private  ProductRepository productRepository;
-
-
 
      public ProductServiceImpl(ProductRepository productRepository) {
          this.productRepository = productRepository;
@@ -95,6 +91,4 @@ public class ProductServiceImpl implements ProductService {
     public List<Product> getLowStockProducts(int stockLimit) {
         return productRepository.findByStockLessThan(stockLimit);
     }
-
-
 }
