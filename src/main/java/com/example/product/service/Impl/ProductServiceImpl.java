@@ -75,7 +75,7 @@ public class ProductServiceImpl implements ProductService {
 
         } catch (NoSuchElementException e) {
             System.err.println("Error: " + e.getMessage());
-            throw e; // let the controller handle 404-style response
+            throw e;
         } catch (Exception e) {
             System.err.println("Unexpected error while fetching products by category '" + category + "': " + e.getMessage());
             throw new RuntimeException("Error fetching products by category: " + category, e);
@@ -107,7 +107,7 @@ public class ProductServiceImpl implements ProductService {
 
         } catch (NoSuchElementException e) {
             System.err.println("Error: " + e.getMessage());
-            throw e; // propagate to controller (e.g., for 404)
+            throw e;
         } catch (Exception e) {
             System.err.println("Unexpected error while manually fetching products for category '"
                     + category + "': " + e.getMessage());
@@ -116,25 +116,31 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> getProductByPriceRange(Integer min, Integer max){
-        if(min != null && max != null){
-            return productRepository.findByPriceBetween(min, max);
-        }
-
-        else if(min != null){
-            return productRepository.findByPriceGreaterThanEqual(min);
-        }
-
-        else if(max != null){
-            return productRepository.findByPriceLessThanEqual(max);
-        }
-        else{
-            return productRepository.findAll();
+    public List<Product> getProductByPriceRange(Integer min, Integer max) {
+        try {
+            if (min != null && max != null) {
+                return productRepository.findByPriceBetween(min, max);
+            } else if (min != null) {
+                return productRepository.findByPriceGreaterThanEqual(min);
+            } else if (max != null) {
+                return productRepository.findByPriceLessThanEqual(max);
+            } else {
+                return productRepository.findAll();
+            }
+        } catch (Exception e) {
+            System.err.println("Error fetching products by price range: " + e.getMessage());
+            return new ArrayList<>();
         }
     }
 
-    public List<Product> getAllProduct(){
-        return productRepository.findAll();
+    @Override
+    public List<Product> getAllProduct() {
+        try {
+            return productRepository.findAll();
+        } catch (Exception e) {
+            System.err.println("Error fetching all products: " + e.getMessage());
+            return new ArrayList<>();
+        }
     }
 
     @Override
