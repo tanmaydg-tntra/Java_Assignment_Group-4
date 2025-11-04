@@ -106,10 +106,10 @@ public class ProductServiceImpl implements ProductService {
             return result;
 
         } catch (NoSuchElementException e) {
-            System.out.println("Error: " + e.getMessage());
+            System.out.println("Exception: " + e.getMessage());
             throw e;
         } catch (Exception e) {
-            System.out.println("Unexpected error while manually fetching products for category "
+            System.out.println("Exception while manually fetching products for category "
                     + category + ": " + e.getMessage());
             throw e;
         }
