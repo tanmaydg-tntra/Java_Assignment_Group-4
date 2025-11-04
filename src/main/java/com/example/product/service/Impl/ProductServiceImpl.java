@@ -52,14 +52,14 @@ public class ProductServiceImpl implements ProductService {
             }
 
             productRepository.deleteById(id);
-            System.out.println("Product deleted successfully with ID: " + id);
+            System.out.println("Product deleted successfully, ID: " + id);
 
         } catch (NoSuchElementException e) {
-            System.err.println("Error: " + e.getMessage());
-            throw e; // rethrow so controller can handle it (e.g., return 404)
+            System.out.println("Exception: " + e.getMessage());
+            throw e;
         } catch (Exception e) {
-            System.err.println("Unexpected error while deleting product with ID " + id + ": " + e.getMessage());
-            throw new RuntimeException("Error deleting product with ID " + id, e);
+            System.out.println("Unexpected exception while deleting product ID " + id + ": " + e.getMessage());
+            throw e;
         }
     }
 
@@ -74,11 +74,11 @@ public class ProductServiceImpl implements ProductService {
             return products;
 
         } catch (NoSuchElementException e) {
-            System.err.println("Error: " + e.getMessage());
+            System.out.println("Exception: " + e.getMessage());
             throw e;
         } catch (Exception e) {
-            System.err.println("Unexpected error while fetching products by category '" + category + "': " + e.getMessage());
-            throw new RuntimeException("Error fetching products by category: " + category, e);
+            System.out.println("Unexpected exception while fetching products by category " + category + ": " + e.getMessage());
+            throw e;
         }
     }
 
@@ -106,12 +106,12 @@ public class ProductServiceImpl implements ProductService {
             return result;
 
         } catch (NoSuchElementException e) {
-            System.err.println("Error: " + e.getMessage());
+            System.out.println("Error: " + e.getMessage());
             throw e;
         } catch (Exception e) {
-            System.err.println("Unexpected error while manually fetching products for category '"
-                    + category + "': " + e.getMessage());
-            throw new RuntimeException("Error manually fetching products for category: " + category, e);
+            System.out.println("Unexpected error while manually fetching products for category "
+                    + category + ": " + e.getMessage());
+            throw e;
         }
     }
 

@@ -65,7 +65,7 @@
                         .body("Product not found with ID: " + id);
             } catch (Exception e) {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                        .body("Error deleting product: " + e.getMessage());
+                        .body("Internal Server Error: Exception deleting product: " + e.getMessage());
             }
         }
     
@@ -82,7 +82,7 @@
                 return ResponseEntity.ok(products);
             } catch (Exception e) {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                        .body("Error fetching products by category: " + e.getMessage());
+                        .body("Internal Server Error: Exception while fetching products by category: " + e.getMessage());
             }
         }
     
@@ -99,7 +99,7 @@
                 return ResponseEntity.ok(products);
             } catch (Exception e) {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                        .body("Error fetching products manually by category: " + e.getMessage());
+                        .body("Internal Server Error: Exception fetching products manually by category: " + e.getMessage());
             }
         }
 
