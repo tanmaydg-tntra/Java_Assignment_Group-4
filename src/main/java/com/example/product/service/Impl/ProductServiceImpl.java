@@ -120,15 +120,18 @@ public class ProductServiceImpl implements ProductService {
         try {
             if (min != null && max != null) {
                 return productRepository.findByPriceBetween(min, max);
-            } else if (min != null) {
+            }
+            else if (min != null) {
                 return productRepository.findByPriceGreaterThanEqual(min);
-            } else if (max != null) {
+            }
+            else if (max != null) {
                 return productRepository.findByPriceLessThanEqual(max);
-            } else {
+            }
+            else {
                 return productRepository.findAll();
             }
         } catch (Exception e) {
-            System.err.println("Error fetching products by price range: " + e.getMessage());
+            System.out.println("Error fetching products by price range: " + e.getMessage());
             return new ArrayList<>();
         }
     }
@@ -138,7 +141,7 @@ public class ProductServiceImpl implements ProductService {
         try {
             return productRepository.findAll();
         } catch (Exception e) {
-            System.err.println("Error fetching all products: " + e.getMessage());
+            System.out.println("Error fetching all products: " + e.getMessage());
             return new ArrayList<>();
         }
     }
@@ -156,17 +159,19 @@ public class ProductServiceImpl implements ProductService {
 
                 if (newProduct.getStock() == 0) {
                     existing.setStatus("Out Of Stock");
-                } else {
+                }
+                else {
                     existing.setStatus("Available");
                 }
 
                 return productRepository.save(existing);
-            } else {
-                System.err.println("Product not found with ID: " + id);
+            }
+            else {
+                System.out.println("Product not found with ID: " + id);
                 return null;
             }
         } catch (Exception e) {
-            System.err.println("Error while updating product: " + e.getMessage());
+            System.out.println("Error while updating product: " + e.getMessage());
             return null;
         }
     }
@@ -176,7 +181,7 @@ public class ProductServiceImpl implements ProductService {
         try {
             return productRepository.findByStockLessThan(stockLimit);
         } catch (Exception e) {
-            System.err.println("Error while getting low-stock products: " + e.getMessage());
+            System.out.println("Error while getting low-stock products: " + e.getMessage());
             return new ArrayList<>();
         }
     }

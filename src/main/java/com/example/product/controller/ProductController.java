@@ -28,14 +28,12 @@
             try {
                 Product addedProduct = service.addProduct(product);
                 if (addedProduct == null) {
-                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                            .body(null);
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
                 }
                 return ResponseEntity.ok(addedProduct);
             } catch (Exception e) {
                 System.out.println("Error while adding product: " + e.getMessage());
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                        .body(null);
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
             }
         }
     
@@ -44,14 +42,12 @@
             try {
                 List<Product> products = service.getProductsByStatus(status);
                 if (products.isEmpty()) {
-                    return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                            .body(null);
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
                 }
                 return ResponseEntity.ok(products);
             } catch (Exception e) {
                 System.out.println("Error while getting products by status: " + e.getMessage());
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                        .body(null);
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
             }
         }
     
@@ -61,11 +57,9 @@
                 service.deleteProduct(id);
                 return ResponseEntity.ok("Product deleted successfully with ID: " + id);
             } catch (NoSuchElementException e) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body("Product not found with ID: " + id);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found with ID: " + id);
             } catch (Exception e) {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                        .body("Internal Server Error: Exception deleting product: " + e.getMessage());
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal Server Error: Exception deleting product: " + e.getMessage());
             }
         }
     
@@ -75,14 +69,12 @@
                 List<Product> products = service.getProductsByCategory(category);
     
                 if (products.isEmpty()) {
-                    return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                            .body("No products found for category: " + category);
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No products found for category: " + category);
                 }
     
                 return ResponseEntity.ok(products);
             } catch (Exception e) {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                        .body("Internal Server Error: Exception while fetching products by category: " + e.getMessage());
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal Server Error: Exception while fetching products by category: " + e.getMessage());
             }
         }
     
@@ -92,14 +84,12 @@
                 List<Product> products = service.getProductsByCategoryManual(category);
     
                 if (products.isEmpty()) {
-                    return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                            .body("No products found for category: " + category);
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No products found for category: " + category);
                 }
     
                 return ResponseEntity.ok(products);
             } catch (Exception e) {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                        .body("Internal Server Error: Exception fetching products manually by category: " + e.getMessage());
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal Server Error: Exception fetching products manually by category: " + e.getMessage());
             }
         }
 
@@ -110,13 +100,11 @@
             try {
                 List<Product> products = service.getProductByPriceRange(min, max);
                 if (products.isEmpty()) {
-                    return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                            .body("No products found in the specified price range.");
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No products found in the specified price range.");
                 }
                 return ResponseEntity.ok(products);
             } catch (Exception e) {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                        .body("Error fetching products by price range: " + e.getMessage());
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error fetching products by price range: " + e.getMessage());
             }
         }
 
@@ -153,8 +141,7 @@
                 List<Product> products = service.getLowStockProducts(stockLimit);
                 return ResponseEntity.ok(products);
             } catch (Exception e) {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                        .body(new ArrayList<>());
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ArrayList<>());
             }
         }
     }
