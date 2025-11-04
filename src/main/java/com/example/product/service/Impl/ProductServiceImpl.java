@@ -28,7 +28,7 @@ public class ProductServiceImpl implements ProductService {
             }
             return productRepository.save(product);
         } catch (Exception e) {
-            System.out.println("Error while adding product: " + e.getMessage());
+            System.out.println("Exception while adding product: " + e.getMessage());
             return null;
         }
     }
@@ -38,7 +38,7 @@ public class ProductServiceImpl implements ProductService {
         try {
             return productRepository.findByStatus(status);
         } catch (Exception e) {
-            System.out.println("Error while getting products by status: " + e.getMessage());
+            System.out.println("Exception while getting products by status: " + e.getMessage());
             return new ArrayList<>();
         }
     }

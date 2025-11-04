@@ -32,7 +32,7 @@
                 }
                 return ResponseEntity.ok(addedProduct);
             } catch (Exception e) {
-                System.out.println("Error while adding product: " + e.getMessage());
+                System.out.println("Exception while adding product: " + e.getMessage());
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
             }
         }
@@ -46,7 +46,7 @@
                 }
                 return ResponseEntity.ok(products);
             } catch (Exception e) {
-                System.out.println("Error while getting products by status: " + e.getMessage());
+                System.out.println("Exception while getting products by status: " + e.getMessage());
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
             }
         }
